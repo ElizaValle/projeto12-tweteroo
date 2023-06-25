@@ -24,20 +24,22 @@ app.post("/sign-up", (req, res) => {
 })
 
 app.post("/tweets", (req, res) => {
-    const { username, tweet } = req.body
+    const { tweet } = req.body
+    // bônus 5
+    const { user } = req.headers
     //console.log(req.body)
 
      // bônus
-     if (!username || typeof username !== "string" || !tweet || typeof tweet !== "string") {
+     if (!user || typeof user !== "string" || !tweet || typeof tweet !== "string") {
         return res.status(400).send("Todos os campos são obrigatórios!")
     }
 
     // para encontrar usuário na lista users[]
-    const userExists = users.find((user) => user.username === username)
+    const userExists = users.find((u) => u.username === user)
 
     if (!userExists) return res.status(401).send("UNAUTHORIZED")
 
-    tweets.push({ username, tweet })
+    tweets.push({ username: user, tweet })
     res.status(201).send("OK")
 })
 
@@ -56,7 +58,7 @@ app.get("/tweets", (req, res) => {
         return { ...tweet, avatar: user.avatar }
     })
 
-    // paginação
+    // bônus 4 - paginação
     if (page) {
         const limit = 10
         const start = (page - 1) * limit
@@ -81,8 +83,6 @@ app.get("/tweets/:username", (req, res) => {
 
     res.send(filteredTweets)
 })
-
-
 
 
 const PORT = 5000
