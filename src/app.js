@@ -52,6 +52,21 @@ app.get("/tweets", (req, res) => {
     res.send(completeTweets)
 })
 
+// bônus 3
+app.get("/tweets/:username", (req, res) => {
+    const { username } = req.params
+
+    const filteredTweets = tweets
+        .filter((tweet) => tweet.username === username)
+        .map((tweet) => {
+            const user = users.find((u) => u.username === tweet.username)
+            return { ...tweet, avatar: user.avatar }
+        })
+
+    res.send(filteredTweets)
+})
+
+
 
 
 const PORT = 5000
