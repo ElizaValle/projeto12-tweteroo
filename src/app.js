@@ -30,6 +30,16 @@ app.post("/tweets", (req, res) => {
     res.send("OK")
 })
 
+app.get("/tweets", (req, res) => {
+    // criação dos tweets completos
+    // pegar as informações dos arrays e transformar em outro array com map()
+    const completeTweets = tweets.map((tweet) => {
+        const user = users.find((u) => u.username === tweet.username)
+        return { ...tweet, avatar: user.avatar }
+    })
+    res.send(completeTweets.slice(-10))
+})
+
 
 
 const PORT = 5000
