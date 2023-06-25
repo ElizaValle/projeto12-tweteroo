@@ -5,7 +5,6 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-
 // variáveis globais
 const users = []
 const tweets = []
@@ -18,6 +17,18 @@ app.post("/sign-up", (req, res) => {
     res.send("OK")
 })
 
+app.post("/tweets", (req, res) => {
+    const { username, tweet } = req.body
+    console.log(req.body)
+
+    // para encontrar usuário na lista users[]
+    const userExists = users.find((user) => user.username === username)
+
+    if (!userExists) return res.send("UNAUTHORIZED")
+
+    tweets.push({ username, tweet })
+    res.send("OK")
+})
 
 
 
