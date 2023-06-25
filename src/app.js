@@ -20,7 +20,7 @@ app.post("/sign-up", (req, res) => {
 
     users.push({ username, avatar })
     //console.log(users)
-    res.send("OK")
+    res.status(201).send("OK")
 })
 
 app.post("/tweets", (req, res) => {
@@ -35,10 +35,10 @@ app.post("/tweets", (req, res) => {
     // para encontrar usuário na lista users[]
     const userExists = users.find((user) => user.username === username)
 
-    if (!userExists) return res.send("UNAUTHORIZED")
+    if (!userExists) return res.status(401).send("UNAUTHORIZED")
 
     tweets.push({ username, tweet })
-    res.send("OK")
+    res.status(201).send("OK")
 })
 
 app.get("/tweets", (req, res) => {
