@@ -42,14 +42,30 @@ app.post("/tweets", (req, res) => {
 })
 
 app.get("/tweets", (req, res) => {
+    // bônus 4
+    const page = Number(req.query.page)
+
+    if (req.query.pag && (isNaN(page) || page < 1)) {
+        return res.status(400).send("Informe uma página válida!")
+    }
+
     // criação dos tweets completos
     // pegar as informações dos arrays e transformar em outro array com map()
-    const tenTweets = tweets.slice(-10)
-    const completeTweets = tenTweets.map((tweet) => {
+    const completeTweets = tweets.map((tweet) => {
         const user = users.find((u) => u.username === tweet.username)
         return { ...tweet, avatar: user.avatar }
     })
-    res.send(completeTweets)
+
+    // paginação
+    if (page) {
+        const limit = 10
+        const start = (page - 1) * limit
+        const end = page * limit
+
+        return res.send(completeTweets.slice(start, end))
+    }
+
+    res.send(completeTweets.slice(-10))
 })
 
 // bônus 3
@@ -57,7 +73,7 @@ app.get("/tweets/:username", (req, res) => {
     const { username } = req.params
 
     const filteredTweets = tweets
-        .filter((tweet) => tweet.username === username)
+        .filter4((tweet) => tweet.username === username)
         .map((tweet) => {
             const user = users.find((u) => u.username === tweet.username)
             return { ...tweet, avatar: user.avatar }
